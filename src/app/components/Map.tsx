@@ -8,13 +8,15 @@ interface MapProps {
       lat: number;
       lng: number;
     };
-    zoom: number;
+    vZoom?: number;
   }
   
 
-export default function Map({center, zoom} : MapProps) {
+export default function Map({center, vZoom} : MapProps) {
     const [location, setLocation] = useState<{ lat: number; lng: number } | undefined>(center);
+    const [zoom, setZoom] = useState<number | undefined>(vZoom);
 
+    
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: 'AIzaSyCO0cmq-pEE39lV1ItHRM52pxYyETORlIo', // replace with your API key
     });
@@ -26,10 +28,11 @@ export default function Map({center, zoom} : MapProps) {
             (position) => {
               const { latitude, longitude } = position.coords;
               setLocation({ lat: latitude, lng: longitude });
+              if(zoom == undefined) setZoom(3);
             },
             (error) => {
-              console.error("Error fetching geolocation:", error);
-              alert("Unable to retrieve your location");
+              setLocation({lat : 46.151241, lng: 14.995463});
+              setZoom(9);
             }
           );
         } else {
@@ -37,10 +40,11 @@ export default function Map({center, zoom} : MapProps) {
         }
     };
     
-    useEffect(() => {
-        if(location == undefined)
-            getLocation();
-    }, []);
+    if(zoom == undefined && location != undefined) setZoom(3);
+
+    if(location == undefined)
+      getLocation();
+    else if (zoom == undefined) setZoom(3);
 
     if (!isLoaded) return <div>Loading...</div>;
 
