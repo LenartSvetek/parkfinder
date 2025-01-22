@@ -85,7 +85,7 @@ const Map = forwardRef<MapHandle, MapProps>(({...props}, ref) => {
           fullscreenControl: false, // Disable fullscreen control
         }}
         onClick={props.onMapClick}
-        onLoad={(map) => (mapRef.current = map)}
+        onLoad={(map) => {(mapRef.current = map)}}
     >
       {
         data?.map((val : parking, i) => {
