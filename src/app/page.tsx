@@ -6,24 +6,25 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "./components/Button";
 import Footer from "./components/Footer";
 import { MapWrapper } from "./components/MapWrapper";
-import Menu from "./components/Menu";
+import Menu, { MenuHandle } from "./components/Menu";
 import styles from "./page.module.css";
 import setBtnStyle from "./styles/settingsButton.module.scss";
 import { faGear } from "@fortawesome/free-solid-svg-icons";
-import Settings from "./components/Settings";
+import Settings, { SettingsHandle } from "./components/Settings";
 import Checkbox from './components/Checkbox';
-import ListView from './components/ListView';
+import ListView, { ListViewHandle } from './components/ListView';
 import { parking } from './data/data';
+import { MapHandle } from './components/Map';
 
 
 
 export default function Home() {
   const [showEl, setShowEl] = useState<boolean>(true);
   
-  const settingsRef = useRef(null);
-  const menuRef = useRef(null);
-  const mapRef = useRef(null);
-  const listViewRef = useRef(null);
+  const settingsRef = useRef<SettingsHandle>(null);
+  const menuRef = useRef<MenuHandle>(null);
+  const mapRef = useRef<MapHandle>(null);
+  const listViewRef = useRef<ListViewHandle>(null);
 
 
   const onSettingsClick = () => {
@@ -43,10 +44,11 @@ export default function Home() {
   }
 
   const onShowCharginStation = (val : ChangeEvent<HTMLInputElement>) => setShowEl(val.target.checked);
-  
+
   const barClick = () => {
     if(menuRef.current == null || mapRef.current == null || listViewRef.current == null || settingsRef.current == null) return;
     
+    if(!('getType' in menuRef.current)) return;
 
     if(menuRef.current.getType() != "listView"){
       menuRef.current.setType("listView");

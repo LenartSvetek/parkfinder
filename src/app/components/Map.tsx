@@ -24,9 +24,9 @@ export interface MapHandle {
 const Map = forwardRef<MapHandle, MapProps>(({...props}, ref) => {
     const [location, setLocation] = useState<{ lat: number; lng: number } | undefined>(props.center);
     const [zoom, setZoom] = useState<number | undefined>(props.vZoom);
-    const [data, setData] = useState<parking[] | undefined>(undefined);
+    const [data, setData] = useState<parking[]>([]);
 
-    const mapRef = useRef(null);
+    const mapRef = useRef<google.maps.Map>(null);
     
     const getLocation = () => {
         if (navigator.geolocation) {
@@ -51,12 +51,13 @@ const Map = forwardRef<MapHandle, MapProps>(({...props}, ref) => {
     else if (zoom == undefined) setZoom(19);
 
    
-    if(location && data == undefined) setData(generateData(location));
+    if(location && data.length == 0) setData(generateData(location));
 
     const getVisibleMarkers = () => {
       if(mapRef.current == null) return [];
 
       const bounds = mapRef.current.getBounds();
+      if(bounds == undefined) return [];
       const newVisibleMarkers = data.filter((marker) => {
         return bounds.contains(new window.google.maps.LatLng(marker.location.lat, marker.location.lng));
       });
@@ -88,7 +89,7 @@ const Map = forwardRef<MapHandle, MapProps>(({...props}, ref) => {
     >
       {
         data?.map((val : parking, i) => {
-          return <ParkMarker key={i} location={val.location} level={val.level} parkInfo={val.parkInfo} showElSpaces={props.showElSpaces}></ParkMarker>
+          return <ParkMarker key={i} location={val.location} level={val.level} parkInfo={val.parkInfo} showElSpaces={props.showElSpaces} name={val.name}></ParkMarker>
         })
       }
     </GoogleMap>

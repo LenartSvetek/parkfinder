@@ -12,7 +12,7 @@ interface MenuProps extends React.HTMLAttributes<HTMLDivElement> {
   
 
 
-interface MenuHandle {
+export interface MenuHandle {
     setType: (type : contextType) => void;
     getType: () => contextType
 }

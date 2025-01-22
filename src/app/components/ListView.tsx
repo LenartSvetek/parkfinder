@@ -4,7 +4,7 @@ import { parking } from '../data/data';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCar, faChargingStation, faUsers, faVideo, faTicket } from '@fortawesome/free-solid-svg-icons';
 
-interface ListViewHandle {
+export interface ListViewHandle {
   show : (show: boolean) => void,
   setParkingSpaces : (parks : parking[]) => void
 }

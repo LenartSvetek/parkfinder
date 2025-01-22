@@ -6,7 +6,7 @@ interface SettignsProps extends React.HTMLAttributes<HTMLDivElement>{
     children? : React.ReactNode
 }
 
-interface SettingsHandle {
+export interface SettingsHandle {
   show : (show: boolean) => void
 }
 
