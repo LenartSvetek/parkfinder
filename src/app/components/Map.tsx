@@ -1,7 +1,7 @@
 'use client'
 
 import { useLoadScript, GoogleMap } from '@react-google-maps/api';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 interface MapProps {
     center?: {
@@ -30,7 +30,7 @@ export default function Map({center, vZoom} : MapProps) {
               setLocation({ lat: latitude, lng: longitude });
               if(zoom == undefined) setZoom(3);
             },
-            (error) => {
+            () => {
               setLocation({lat : 46.151241, lng: 14.995463});
               setZoom(9);
             }
