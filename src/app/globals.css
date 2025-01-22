@@ -40,3 +40,7 @@ a {
     color-scheme: dark;
   }
 }
+
+.gm-style-cc {
+  display: none !important;
+}

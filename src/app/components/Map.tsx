@@ -1,7 +1,11 @@
 'use client'
 
-import { useLoadScript, GoogleMap } from '@react-google-maps/api';
+import { useLoadScript, GoogleMap, Marker, OverlayView } from '@react-google-maps/api';
 import { useState } from 'react';
+import { generateData, parking} from '../data/data';
+import ParkMarker from './ParkMarker';
+
+import { mapStyle } from '../data/mapStyle';
 
 interface MapProps {
     center?: {
@@ -28,7 +32,7 @@ export default function Map({center, vZoom} : MapProps) {
             (position) => {
               const { latitude, longitude } = position.coords;
               setLocation({ lat: latitude, lng: longitude });
-              if(zoom == undefined) setZoom(2);
+              if(zoom == undefined) setZoom(19);
             },
             () => {
               setLocation({lat : 46.151241, lng: 14.995463});
@@ -38,13 +42,19 @@ export default function Map({center, vZoom} : MapProps) {
         }
     };
     
-    if(zoom == undefined && location != undefined) setZoom(3);
+    if(zoom == undefined && location != undefined) setZoom(19);
 
     if(location == undefined)
       getLocation();
-    else if (zoom == undefined) setZoom(2);
+    else if (zoom == undefined) setZoom(19);
 
     if (!isLoaded) return <div>Loading...</div>;
+
+    let data : parking[] = [];
+    if(location) data = generateData(location);
+
+  /*
+  */ 
 
     return (
     <GoogleMap
@@ -54,7 +64,20 @@ export default function Map({center, vZoom} : MapProps) {
         }}
         zoom={zoom}
         center={location}
+        options={{
+          styles : mapStyle,
+          disableDefaultUI: true, // Disables all default UI controls
+          zoomControl: false,     // Disable zoom control
+          streetViewControl: false, // Disable street view control
+          mapTypeControl: false,  // Disable map type control
+          fullscreenControl: false, // Disable fullscreen control
+        }}
     >
+      {
+        data.map((val : parking, i) => {
+          return <ParkMarker key={i} location={val.location} level={val.level} parkInfo={val.parkInfo}></ParkMarker>
+        })
+      }
     </GoogleMap>
     );
 }

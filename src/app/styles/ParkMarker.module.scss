@@ -1,0 +1,79 @@
+$markerWidth: fit-content;
+$markerHeight: 45px;
+
+$markerExtWidth: 20px;
+$markerExtHeight: 20px;
+
+$markerBackground: #383838;
+
+$markerPaddingWidth: 5px;
+$markerPaddingHeight: 5px;
+
+$markerBorderRadius: 25px;
+
+$normalCapacity: white;
+$closeToCapacity: #d98508;
+$atCapacity: #c52a1e;
+
+.marker {
+    position: relative;
+    background-color: $markerBackground;
+    width: $markerWidth;
+    height: $markerHeight;
+
+    border-radius: $markerBorderRadius;
+    margin-top: -10px;
+
+    display: flex;
+
+    gap: 10px;
+
+    padding: $markerPaddingHeight $markerPaddingWidth;
+
+    &::after{
+        content: " ";
+
+        z-index: -1;
+
+        position: absolute;
+        bottom: -$markerExtHeight / 2;
+        left: calc(50% - $markerExtWidth / 2);
+
+        width: $markerExtWidth;
+        height: $markerExtHeight;
+
+        transform: rotate(45deg);
+
+        background-color: $markerBackground;
+    }
+
+    .pill{
+        width: $markerWidth;
+        border-radius: $markerBorderRadius;
+
+        padding: 0px 10px;
+
+        display: flex;
+
+        gap: 5px;
+
+        align-items: center;
+
+        background-color: $normalCapacity;
+
+        &.closeToCapacity{
+            background-color: $closeToCapacity;
+        }
+
+        &.atCapacity {
+            background-color: $atCapacity;
+        }
+
+        .capacity {
+            color: black;
+            font-size: 25px;
+        }
+
+        
+    }
+}
