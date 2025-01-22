@@ -35,8 +35,6 @@ export default function Map({center, vZoom} : MapProps) {
               setZoom(9);
             }
           );
-        } else {
-          alert("Geolocation is not supported by your browser.");
         }
     };
     
