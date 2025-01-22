@@ -4,15 +4,12 @@ import { parking } from '../data/data';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCar, faChargingStation, faUsers, faVideo, faTicket } from '@fortawesome/free-solid-svg-icons';
 
-interface ListViewProps extends React.HTMLAttributes<HTMLDivElement>{
-}
-
 interface ListViewHandle {
   show : (show: boolean) => void,
   setParkingSpaces : (parks : parking[]) => void
 }
 
-const ListView = forwardRef<ListViewHandle, ListViewProps>(({...props }, ref) => {
+const ListView = forwardRef<ListViewHandle, React.HTMLAttributes<HTMLDivElement>>(({...props }, ref) => {
     const [bShow, setShow] = useState<boolean>(false);  
     const [parkings, setParking] = useState<parking[]>([]);
     

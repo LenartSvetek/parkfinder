@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useState } from 'react';
+import { ChangeEvent, useRef, useState } from 'react';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "./components/Button";
@@ -20,7 +20,7 @@ import { parking } from './data/data';
 export default function Home() {
   const [showEl, setShowEl] = useState<boolean>(true);
   
-  const settingsRef = useRef<HTMLDivElement>(null);
+  const settingsRef = useRef(null);
   const menuRef = useRef(null);
   const mapRef = useRef(null);
   const listViewRef = useRef(null);
@@ -42,8 +42,8 @@ export default function Home() {
   
   }
 
-  const onShowCharginStation = (val : any) => setShowEl(val.target.checked);
-
+  const onShowCharginStation = (val : ChangeEvent<HTMLInputElement>) => setShowEl(val.target.checked);
+  
   const barClick = () => {
     if(menuRef.current == null || mapRef.current == null || listViewRef.current == null || settingsRef.current == null) return;
     
