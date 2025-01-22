@@ -4,7 +4,11 @@ import styles from "../styles/ParkMarker.module.scss"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCar, faChargingStation, faTicket, faUsers, faVideo } from "@fortawesome/free-solid-svg-icons";
 
-export default function ParkMarker(info : parking) {
+interface ParkMarkerProps extends parking {
+    showElSpaces ?: boolean
+}
+
+export default function ParkMarker(info : ParkMarkerProps) {
 
     return <OverlayView
         position={info.location}
@@ -18,7 +22,7 @@ export default function ParkMarker(info : parking) {
                 <FontAwesomeIcon icon={faCar} color="black" size="xl" className={styles.car}/>
             </div>
             {
-                (info.parkInfo.electricSpaces > 0)?
+                (info.parkInfo.electricSpaces > 0 && (info.showElSpaces == undefined || info.showElSpaces))?
                 <div className={`${styles.pill} ${(info.parkInfo.freeElSpaces > 3)? "" : (info.parkInfo.freeElSpaces > 0)? styles.closeToCapacity : styles.atCapacity}`}>
                     <span className={styles.capacity}>{info.parkInfo.freeElSpaces}</span>
                     <FontAwesomeIcon icon={faChargingStation} color="black" size="xl" />

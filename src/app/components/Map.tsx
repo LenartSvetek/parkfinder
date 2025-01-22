@@ -1,32 +1,33 @@
 'use client'
 
 import { useLoadScript, GoogleMap } from '@react-google-maps/api';
-import { useState } from 'react';
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { generateData, parking} from '../data/data';
 import ParkMarker from './ParkMarker';
 
 import { mapStyle } from '../data/mapStyle';
 
-interface MapProps {
-    center?: {
-      lat: number;
-      lng: number;
+export interface MapProps {
+    center ?: {
+      lat : number;
+      lng : number;
     };
-    vZoom?: number;
-  }
-  
+    vZoom ?: number;
+    showElSpaces? : boolean;
+    onMapClick ?: () => void
+}
 
-export default function Map({center, vZoom} : MapProps) {
-    const [location, setLocation] = useState<{ lat: number; lng: number } | undefined>(center);
-    const [zoom, setZoom] = useState<number | undefined>(vZoom);
+export interface MapHandle {
+  getVisibleMarkers : () => parking[]
+}
+
+const Map = forwardRef<MapHandle, MapProps>(({...props}, ref) => {
+    const [location, setLocation] = useState<{ lat: number; lng: number } | undefined>(props.center);
+    const [zoom, setZoom] = useState<number | undefined>(props.vZoom);
     const [data, setData] = useState<parking[] | undefined>(undefined);
 
+    const mapRef = useRef(null);
     
-    const { isLoaded } = useLoadScript({
-        googleMapsApiKey: 'AIzaSyCO0cmq-pEE39lV1ItHRM52pxYyETORlIo', // replace with your API key
-    });
-
-
     const getLocation = () => {
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(
@@ -49,11 +50,20 @@ export default function Map({center, vZoom} : MapProps) {
       getLocation();
     else if (zoom == undefined) setZoom(19);
 
-    if (!isLoaded) return <div>Loading...</div>;
-
    
     if(location && data == undefined) setData(generateData(location));
 
+    const getVisibleMarkers = () => {
+      const bounds = mapRef.current.getBounds();
+      const newVisibleMarkers = data.filter((marker) => {
+        return bounds.contains(new window.google.maps.LatLng(marker.location.lat, marker.location.lng));
+      });
+      return newVisibleMarkers;
+    };
+
+    useImperativeHandle(ref, () => ({
+      getVisibleMarkers
+    }));
 
     return (
     <GoogleMap
@@ -71,12 +81,18 @@ export default function Map({center, vZoom} : MapProps) {
           mapTypeControl: false,  // Disable map type control
           fullscreenControl: false, // Disable fullscreen control
         }}
+        onClick={props.onMapClick}
+        onLoad={(map) => (mapRef.current = map)}
     >
       {
         data?.map((val : parking, i) => {
-          return <ParkMarker key={i} location={val.location} level={val.level} parkInfo={val.parkInfo}></ParkMarker>
+          return <ParkMarker key={i} location={val.location} level={val.level} parkInfo={val.parkInfo} showElSpaces={props.showElSpaces}></ParkMarker>
         })
       }
     </GoogleMap>
     );
-}
+});
+
+Map.displayName = "Map";
+
+export { Map };

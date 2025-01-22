@@ -1,0 +1,17 @@
+.settings {
+    display: flex;
+    flex-direction: column;
+
+    font-weight: 700;
+    font-size: 18px;
+    .inputBox{
+        display: flex;
+        justify-content: space-between;
+        .rangeLike {
+        }
+    }
+
+    &.hidden{
+        display: none;
+    }
+}

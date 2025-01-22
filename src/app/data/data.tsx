@@ -17,6 +17,7 @@ export interface parking {
         lat : number,
         lng : number
     }
+    name : string
 }
 
 export function generateData({lat, lng} : {lat: number, lng: number}) {
@@ -44,7 +45,8 @@ export function generateData({lat, lng} : {lat: number, lng: number}) {
             location : {
                 lat: pLat,
                 lng: pLng
-            }
+            },
+            name: "Parkirišče " + i
         })
     }
     return data;

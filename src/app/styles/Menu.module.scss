@@ -1,0 +1,51 @@
+.Menu {
+    position: absolute;
+    background-color: #383838;
+
+    bottom: -1px;
+    left: 10px;
+
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+
+    width: calc(100vw - 20px);
+
+    min-height: 25px;
+
+
+
+    > :nth-child(2):not(.hidden) {
+        margin-top: 50px;
+    }
+
+    > .hidden{
+        height: 0px;
+        > * {
+            display: none;
+        }
+    }
+    
+    > :last-child:not(.hidden){
+        margin-bottom: 25px;
+    }
+    
+    .barCont{
+        position: relative;
+
+        .bar {
+            position: absolute;
+
+            width: 40%;
+            height: 5px;
+
+            left: 30%;
+            top: 12px;
+
+            background-color: white;
+
+            border-radius: 10px;
+        }
+    }
+
+    padding: 0px 25px;
+}
