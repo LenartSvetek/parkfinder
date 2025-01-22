@@ -19,6 +19,7 @@ interface MapProps {
 export default function Map({center, vZoom} : MapProps) {
     const [location, setLocation] = useState<{ lat: number; lng: number } | undefined>(center);
     const [zoom, setZoom] = useState<number | undefined>(vZoom);
+    const [data, setData] = useState<parking[] | undefined>(undefined);
 
     
     const { isLoaded } = useLoadScript({
@@ -50,11 +51,9 @@ export default function Map({center, vZoom} : MapProps) {
 
     if (!isLoaded) return <div>Loading...</div>;
 
-    let data : parking[] = [];
-    if(location) data = generateData(location);
+   
+    if(location && data == undefined) setData(generateData(location));
 
-  /*
-  */ 
 
     return (
     <GoogleMap
