@@ -30,6 +30,8 @@ $atCapacity: #c52a1e;
 
     padding: $markerPaddingHeight $markerPaddingWidth;
 
+
+    translate: -50% -50%;
     &::after{
         content: " ";
 
