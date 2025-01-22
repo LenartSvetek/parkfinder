@@ -54,6 +54,8 @@ const Map = forwardRef<MapHandle, MapProps>(({...props}, ref) => {
     if(location && data == undefined) setData(generateData(location));
 
     const getVisibleMarkers = () => {
+      if(mapRef.current == null) return [];
+
       const bounds = mapRef.current.getBounds();
       const newVisibleMarkers = data.filter((marker) => {
         return bounds.contains(new window.google.maps.LatLng(marker.location.lat, marker.location.lng));
