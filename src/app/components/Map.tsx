@@ -1,6 +1,6 @@
 'use client'
 
-import { useLoadScript, GoogleMap, Marker, OverlayView } from '@react-google-maps/api';
+import { useLoadScript, GoogleMap } from '@react-google-maps/api';
 import { useState } from 'react';
 import { generateData, parking} from '../data/data';
 import ParkMarker from './ParkMarker';

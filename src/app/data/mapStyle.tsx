@@ -1,4 +1,4 @@
-export let mapStyle = [
+export const mapStyle = [
     {
       "elementType": "geometry",
       "stylers": [

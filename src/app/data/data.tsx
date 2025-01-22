@@ -20,17 +20,17 @@ export interface parking {
 }
 
 export function generateData({lat, lng} : {lat: number, lng: number}) {
-    let data : parking[] = [];
+    const data : parking[] = [];
     
     for(let i  = 0; i < randomInt(10, 15); i++){
-        let pLat = lat + ((randomInt(-50, 50)) / 5000);
-        let pLng = lng + ((randomInt(-50, 50)) / 5000);
-        let level = randomInt(1, 3) as 1 | 2 | 3;
-        let totalSpaces = randomInt(1, 50);
-        let electricSpaces = totalSpaces > 15? randomInt(0, 5) : 0;
-        let freeElSpaces = randomInt(0, 5);
-        let normalSpaces = totalSpaces;
-        let freeSpaces = randomInt(0, normalSpaces);
+        const pLat = lat + ((randomInt(-50, 50)) / 5000);
+        const pLng = lng + ((randomInt(-50, 50)) / 5000);
+        const level = randomInt(1, 3) as 1 | 2 | 3;
+        const totalSpaces = randomInt(1, 50);
+        const electricSpaces = totalSpaces > 15? randomInt(0, 5) : 0;
+        const freeElSpaces = randomInt(0, 5);
+        const normalSpaces = totalSpaces;
+        const freeSpaces = randomInt(0, normalSpaces);
 
         data.push({
             level: level,
