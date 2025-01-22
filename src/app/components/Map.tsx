@@ -1,6 +1,6 @@
 'use client'
 
-import { useLoadScript, GoogleMap, Marker } from '@react-google-maps/api';
+import { useLoadScript, GoogleMap } from '@react-google-maps/api';
 import { useEffect, useState } from 'react';
 
 interface MapProps {
@@ -13,10 +13,10 @@ interface MapProps {
   
 
 export default function Map({center, zoom} : MapProps) {
-    const [location, setLocation] = useState<{ lat: number; lng: number } | null>(null);
+    const [location, setLocation] = useState<{ lat: number; lng: number } | undefined>(center);
 
     const { isLoaded } = useLoadScript({
-    googleMapsApiKey: 'AIzaSyCO0cmq-pEE39lV1ItHRM52pxYyETORlIo', // replace with your API key
+        googleMapsApiKey: 'AIzaSyCO0cmq-pEE39lV1ItHRM52pxYyETORlIo', // replace with your API key
     });
 
 
@@ -36,11 +36,9 @@ export default function Map({center, zoom} : MapProps) {
           alert("Geolocation is not supported by your browser.");
         }
     };
-
-    console.log(center);
     
     useEffect(() => {
-        if(center == undefined)
+        if(location == undefined)
             getLocation();
     }, []);
 
@@ -53,7 +51,7 @@ export default function Map({center, zoom} : MapProps) {
         height: '100dvh',
         }}
         zoom={zoom}
-        center={center}
+        center={location}
     >
     </GoogleMap>
     );
