@@ -82,7 +82,7 @@ export default function Home() {
       <Footer>
         <Menu ref={menuRef} type="hidden" barCallBack={barClick}>
           <Settings ref={settingsRef}>
-            <Checkbox onChange={onShowCharginStation}>Show electric chargin stations</Checkbox>
+            <Checkbox onChange={onShowCharginStation} checked={showEl}>Show electric chargin stations</Checkbox>
           </Settings>
           <ListView ref={listViewRef}>
           </ListView>
