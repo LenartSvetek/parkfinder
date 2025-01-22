@@ -73,7 +73,7 @@ export default function Map({center, vZoom} : MapProps) {
         }}
     >
       {
-        data.map((val : parking, i) => {
+        data?.map((val : parking, i) => {
           return <ParkMarker key={i} location={val.location} level={val.level} parkInfo={val.parkInfo}></ParkMarker>
         })
       }
