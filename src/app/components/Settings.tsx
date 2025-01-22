@@ -11,7 +11,7 @@ interface SettingsHandle {
 }
 
 const Settings = forwardRef<SettingsHandle, SettignsProps>(({ children, ...props }, ref) => {
-  let [bShow, setShow] = useState<boolean>(false);  
+  const [bShow, setShow] = useState<boolean>(false);  
   
   const show = (show : boolean) => setShow(show);
 

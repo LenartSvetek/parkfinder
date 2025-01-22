@@ -13,8 +13,8 @@ interface ListViewHandle {
 }
 
 const ListView = forwardRef<ListViewHandle, ListViewProps>(({...props }, ref) => {
-    let [bShow, setShow] = useState<boolean>(false);  
-    let [parkings, setParking] = useState<parking[]>([]);
+    const [bShow, setShow] = useState<boolean>(false);  
+    const [parkings, setParking] = useState<parking[]>([]);
     
     const show = (show : boolean) => setShow(show);
 
@@ -44,6 +44,9 @@ const ListView = forwardRef<ListViewHandle, ListViewProps>(({...props }, ref) =>
                             </div> 
                             : <></>
                         }
+                        <div className={styles.pill}>
+                            <FontAwesomeIcon icon={(park.level == 1)? faUsers : (park.level == 2)? faVideo : faTicket} color="black" size="xl" />
+                        </div>
                     </div>
                 </div>
             </>)

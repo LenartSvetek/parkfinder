@@ -1,7 +1,5 @@
 import { forwardRef, useImperativeHandle, useState } from 'react';
-import styles from '../styles/Menu.module.scss'
-import { get } from 'http';
-import { parking } from '../data/data';
+import styles from '../styles/Menu.module.scss';
 
 type contextType = 'hidden' | 'settings' | 'listView' | 'parking';
 
@@ -22,7 +20,7 @@ interface MenuHandle {
   
 // Use forwardRef to pass the ref to the underlying div element
 const Menu = forwardRef<MenuHandle, MenuProps>(({ children, type, barCallBack, ...props }, ref) => {
-    let [cType, setType] = useState<contextType>(type);
+    const [cType, setType] = useState<contextType>(type);
 
     const getType = () => cType;
     

@@ -18,7 +18,7 @@ import { parking } from './data/data';
 
 
 export default function Home() {
-  let [showEl, setShowEl] = useState<boolean>(true);
+  const [showEl, setShowEl] = useState<boolean>(true);
   
   const settingsRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef(null);
@@ -26,7 +26,7 @@ export default function Home() {
   const listViewRef = useRef(null);
 
 
-  let onSettingsClick = () => {
+  const onSettingsClick = () => {
     if(menuRef.current == null || mapRef.current == null || listViewRef.current == null || settingsRef.current == null) return;
 
 
@@ -42,9 +42,9 @@ export default function Home() {
   
   }
 
-  let onShowCharginStation = (val : any) => setShowEl(val.target.checked);
+  const onShowCharginStation = (val : any) => setShowEl(val.target.checked);
 
-  let barClick = () => {
+  const barClick = () => {
     if(menuRef.current == null || mapRef.current == null || listViewRef.current == null || settingsRef.current == null) return;
     
 
@@ -59,12 +59,12 @@ export default function Home() {
       listViewRef.current.show(false);
     }
 
-    let parks : parking[] = mapRef.current.getVisibleMarkers();
+    const parks : parking[] = mapRef.current.getVisibleMarkers();
 
     listViewRef.current.setParkingSpaces(parks);
   }
 
-  let hideUI = () => {
+  const hideUI = () => {
     if(menuRef.current == null || mapRef.current == null || listViewRef.current == null || settingsRef.current == null) return;
     menuRef.current.setType("hidden");
     settingsRef.current.show(false);

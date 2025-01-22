@@ -6,10 +6,9 @@ interface checkbox extends React.InputHTMLAttributes<HTMLInputElement>{
 }
 
 
-const { v4: uuidv4 } = require('uuid');
 export default function Checkbox({children, ...props } : checkbox) {
     
-    let uuid = uuidv4();
+    const uuid = Math.floor(Math.random() * 100000000).toString();
      return <div className={styles.inputBox}>
      <label htmlFor={uuid}>{children}</label>
      <input id={uuid} {...props} type='checkbox'
