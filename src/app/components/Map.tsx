@@ -28,7 +28,7 @@ export default function Map({center, vZoom} : MapProps) {
             (position) => {
               const { latitude, longitude } = position.coords;
               setLocation({ lat: latitude, lng: longitude });
-              if(zoom == undefined) setZoom(3);
+              if(zoom == undefined) setZoom(2);
             },
             () => {
               setLocation({lat : 46.151241, lng: 14.995463});
@@ -42,7 +42,7 @@ export default function Map({center, vZoom} : MapProps) {
 
     if(location == undefined)
       getLocation();
-    else if (zoom == undefined) setZoom(3);
+    else if (zoom == undefined) setZoom(2);
 
     if (!isLoaded) return <div>Loading...</div>;
 
