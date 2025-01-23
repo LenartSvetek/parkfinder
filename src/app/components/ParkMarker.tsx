@@ -21,13 +21,17 @@ const ParkMarker = forwardRef<ParkMarkerHandle, ParkMarkerProps>((info : ParkMar
         getParkingId
     }));
 
+    const handleClick = () => {
+        if(info.onMarkerClick) info.onMarkerClick(getParkingId());
+    }
+
     return <OverlayView
         position={info.location}
         mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
     >
         <div
             className={styles.marker}
-            onClick={() => {info.onMarkerClick? info.onMarkerClick(getParkingId()) : (()=> {})() }}
+            onClick={handleClick}
         >
             <div className={`${styles.pill} ${(info.parkInfo.freeSpaces > 5)? "" : (info.parkInfo.freeSpaces > 0)? styles.closeToCapacity : styles.atCapacity}`}>
                 <span className={styles.capacity}>{info.parkInfo.freeSpaces}</span>
