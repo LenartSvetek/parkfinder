@@ -4,12 +4,16 @@ import { parking } from '../data/data';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCar, faChargingStation, faUsers, faVideo, faTicket } from '@fortawesome/free-solid-svg-icons';
 
+interface ListViewProps extends React.HTMLAttributes<HTMLDivElement> {
+    onItemClick ?: (parkingId : number) => void;
+}
+
 export interface ListViewHandle {
   show : (show: boolean) => void,
   setParkingSpaces : (parks : parking[]) => void
 }
 
-const ListView = forwardRef<ListViewHandle, React.HTMLAttributes<HTMLDivElement>>(({...props }, ref) => {
+const ListView = forwardRef<ListViewHandle, ListViewProps>(({...props }, ref) => {
     const [bShow, setShow] = useState<boolean>(false);  
     const [parkings, setParking] = useState<parking[]>([]);
     
@@ -22,11 +26,16 @@ const ListView = forwardRef<ListViewHandle, React.HTMLAttributes<HTMLDivElement>
         setParkingSpaces
     }));
 
+    const handleItemClick = (parkingId : number) => {
+        if(props.onItemClick) props.onItemClick(parkingId);
+    } 
+
+
     return (
         <div {...props} className={`${styles.listView} ${(!bShow)?styles.hidden : ""}`}>
         {
             parkings.map((park, i) => <>
-                <div key={i} className={styles.item}>
+                <div key={i} className={styles.item} onClick={() => handleItemClick(i)}>
                     <span>{park.name}</span>
                     <div>
                         <div className={`${styles.pill} ${(park.parkInfo.freeSpaces > 5)? "" : (park.parkInfo.freeSpaces > 0)? styles.closeToCapacity : styles.atCapacity}`}>

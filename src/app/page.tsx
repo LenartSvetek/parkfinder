@@ -54,8 +54,6 @@ export default function Home() {
 
   const barClick = () => {
     if(menuRef.current == null || parkViewRef.current == null || mapRef.current == null || listViewRef.current == null || settingsRef.current == null) return;
-    
-    if(!('getType' in menuRef.current)) return;
 
     if(menuRef.current.getType() != "listView"){
       menuRef.current.setType("listView");
@@ -80,7 +78,7 @@ export default function Home() {
     menuRef.current.setType("hidden");
     settingsRef.current.show(false);
     listViewRef.current.show(false);
-    parkViewRef.current.show(false)
+    parkViewRef.current.show(false);
   }
 
   const handleSearch = () => {
@@ -135,7 +133,7 @@ export default function Home() {
             <Settings ref={settingsRef}>
               <Checkbox onChange={onShowCharginStation} checked={showEl}>Show electric chargin stations</Checkbox>
             </Settings>
-            <ListView ref={listViewRef}>
+            <ListView ref={listViewRef} onItemClick={onMarkerClick}>
             </ListView>
             <ParkView ref={parkViewRef}></ParkView>
           </Menu>

@@ -9,6 +9,10 @@ $atCapacity: #c52a1e;
 
     gap: 15px;
 
+    &.hidden {
+        display: none;
+    }
+
     h2{
         text-align: center;
     }
