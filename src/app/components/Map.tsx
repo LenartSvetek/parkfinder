@@ -48,7 +48,7 @@ const Map = forwardRef<MapHandle, MapProps>(({...props}, ref) => {
 
     if(location == undefined)
       getLocation();
-    else if (zoom == undefined) setZoom(19);
+    else if (zoom == undefined) setZoom(16);
 
    
     if(location && data.length == 0) setData(generateData(location));
