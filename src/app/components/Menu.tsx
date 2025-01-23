@@ -1,7 +1,7 @@
 import { forwardRef, useImperativeHandle, useState } from 'react';
 import styles from '../styles/Menu.module.scss';
 
-type contextType = 'hidden' | 'settings' | 'listView' | 'parking';
+type contextType = 'hidden' | 'settings' | 'listView' | 'parkView';
 
 // Define the interface for the component props
 interface MenuProps extends React.HTMLAttributes<HTMLDivElement> {

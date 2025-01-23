@@ -17,6 +17,7 @@ import { parking } from './data/data';
 import { MapHandle } from './components/Map';
 import { Autocomplete, LoadScriptNext } from '@react-google-maps/api';
 import React from 'react';
+import ParkView, { ParkViewHandle } from './components/ParkView';
 
 
 
@@ -28,17 +29,19 @@ export default function Home() {
   const menuRef = useRef<MenuHandle>(null);
   const mapRef = useRef<MapHandle>(null);
   const listViewRef = useRef<ListViewHandle>(null);
+  const parkViewRef = useRef<ParkViewHandle>(null);
 
 
 
   const onSettingsClick = () => {
-    if(menuRef.current == null || mapRef.current == null || listViewRef.current == null || settingsRef.current == null) return;
+    if(menuRef.current == null || parkViewRef.current == null || mapRef.current == null || listViewRef.current == null || settingsRef.current == null) return;
 
 
     if(menuRef.current.getType() != "settings"){
       menuRef.current.setType("settings");
       settingsRef.current.show(true);
       listViewRef.current.show(false);
+      parkViewRef.current.show(false);
     }
     else {
       menuRef.current.setType("hidden");
@@ -50,7 +53,7 @@ export default function Home() {
   const onShowCharginStation = (val : ChangeEvent<HTMLInputElement>) => setShowEl(val.target.checked);
 
   const barClick = () => {
-    if(menuRef.current == null || mapRef.current == null || listViewRef.current == null || settingsRef.current == null) return;
+    if(menuRef.current == null || parkViewRef.current == null || mapRef.current == null || listViewRef.current == null || settingsRef.current == null) return;
     
     if(!('getType' in menuRef.current)) return;
 
@@ -58,11 +61,13 @@ export default function Home() {
       menuRef.current.setType("listView");
       listViewRef.current.show(true);
       settingsRef.current.show(false);
+      parkViewRef.current.show(false);
     }
     else {
       menuRef.current.setType("hidden");
       settingsRef.current.show(false);
       listViewRef.current.show(false);
+      parkViewRef.current.show(false);
     }
 
     const parks : parking[] = mapRef.current.getVisibleMarkers();
@@ -71,10 +76,11 @@ export default function Home() {
   }
 
   const hideUI = () => {
-    if(menuRef.current == null || mapRef.current == null || listViewRef.current == null || settingsRef.current == null) return;
+    if(menuRef.current == null || mapRef.current == null || listViewRef.current == null || settingsRef.current == null || parkViewRef.current == null) return;
     menuRef.current.setType("hidden");
     settingsRef.current.show(false);
     listViewRef.current.show(false);
+    parkViewRef.current.show(false)
   }
 
   const handleSearch = () => {
@@ -98,6 +104,20 @@ export default function Home() {
     
   }
 
+  const onMarkerClick = (parkingId : number) => {
+    if(menuRef.current == null || mapRef.current == null || listViewRef.current == null || settingsRef.current == null || parkViewRef.current == null) return;
+
+    if(menuRef.current.getType() != "parkView"){
+      menuRef.current.setType("parkView");
+      settingsRef.current.show(false);
+      listViewRef.current.show(false);
+      parkViewRef.current.show(true);
+      parkViewRef.current.setParkingSpace(mapRef.current.getData()[parkingId]);
+    } else {
+      parkViewRef.current.setParkingSpace(mapRef.current.getData()[parkingId]);
+    }
+  }
+
   return (
     <LoadScriptNext googleMapsApiKey="AIzaSyCO0cmq-pEE39lV1ItHRM52pxYyETORlIo" libraries={['places']} onLoad={onGoogleLoad}>
       <div className={styles.page}>
@@ -109,7 +129,7 @@ export default function Home() {
             <input type='text' />
           </Autocomplete>
         </div>
-        <MapWrapper showElSpaces={showEl} ref={mapRef} onMapClick={hideUI} />
+        <MapWrapper showElSpaces={showEl} ref={mapRef} onMapClick={hideUI} onMarkerClick={onMarkerClick} />
         <Footer>
           <Menu ref={menuRef} type="hidden" barCallBack={barClick}>
             <Settings ref={settingsRef}>
@@ -117,6 +137,7 @@ export default function Home() {
             </Settings>
             <ListView ref={listViewRef}>
             </ListView>
+            <ParkView ref={parkViewRef}></ParkView>
           </Menu>
         </Footer>
       </div>

@@ -1,0 +1,70 @@
+$normalCapacity: white;
+$closeToCapacity: #d98508;
+$atCapacity: #c52a1e;
+
+
+.parkView{
+    display: flex;
+    flex-direction: column;
+
+    gap: 15px;
+
+    h2{
+        text-align: center;
+    }
+
+    .pills{
+
+        display: flex;
+        gap: 10px;
+        justify-content: space-evenly;
+        .pill {
+            display: flex;
+
+            gap: 10px;
+            align-items: center;
+            justify-content: space-around;
+            min-width: 72px;
+            background-color: $normalCapacity;
+            color: black;
+
+            padding: 5px 10px;
+
+            border-radius: 25px;
+
+            &.closeToCapacity {
+                background-color: $closeToCapacity;
+            }
+    
+            &.atCapacity {
+                background-color: $atCapacity;
+            }
+        }
+    }
+
+    .image {
+        width: 100%;
+        height: fit-content;
+    }
+
+    .link{
+        display: flex;
+        justify-content: flex-end;
+
+        .pill {
+            display: flex;
+
+            gap: 10px;
+            align-items: center;
+            justify-content: space-around;
+            min-width: 72px;
+            background-color: $normalCapacity;
+            color: black;
+            font-weight: 700;
+
+            padding: 5px 10px;
+
+            border-radius: 25px;
+        }
+    }
+}

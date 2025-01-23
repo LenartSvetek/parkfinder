@@ -3,18 +3,31 @@ import { parking } from "../data/data";
 import styles from "../styles/ParkMarker.module.scss"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCar, faChargingStation, faTicket, faUsers, faVideo } from "@fortawesome/free-solid-svg-icons";
+import { forwardRef, RefObject, useImperativeHandle } from "react";
 
 interface ParkMarkerProps extends parking {
-    showElSpaces ?: boolean
+    showElSpaces ?: boolean,
+    onMarkerClick ?: (idParking : number) => void
 }
 
-export default function ParkMarker(info : ParkMarkerProps) {
+export interface ParkMarkerHandle {
+    getParkingId : () => number;
+}
+
+const ParkMarker = forwardRef<ParkMarkerHandle, ParkMarkerProps>((info : ParkMarkerProps, ref) => {
+    const getParkingId = () => info.idParking;
+    
+    useImperativeHandle(ref, () => ({
+        getParkingId
+    }));
+
     return <OverlayView
         position={info.location}
         mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
     >
         <div
             className={styles.marker}
+            onClick={() => {info.onMarkerClick? info.onMarkerClick(getParkingId()) : undefined}}
         >
             <div className={`${styles.pill} ${(info.parkInfo.freeSpaces > 5)? "" : (info.parkInfo.freeSpaces > 0)? styles.closeToCapacity : styles.atCapacity}`}>
                 <span className={styles.capacity}>{info.parkInfo.freeSpaces}</span>
@@ -34,4 +47,8 @@ export default function ParkMarker(info : ParkMarkerProps) {
             </div>
         </div>
     </OverlayView>
-}
+});
+
+ParkMarker.displayName = "Park Marker";
+
+export { ParkMarker }
