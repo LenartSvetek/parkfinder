@@ -15,18 +15,21 @@ import Checkbox from './components/Checkbox';
 import ListView, { ListViewHandle } from './components/ListView';
 import { parking } from './data/data';
 import { MapHandle } from './components/Map';
-import { Autocomplete, LoadScriptNext } from '@react-google-maps/api';
+import { Autocomplete, LoadScriptNext, StandaloneSearchBox } from '@react-google-maps/api';
+import React from 'react';
 
 
 
 export default function Home() {
   const [showEl, setShowEl] = useState<boolean>(true);
+  const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | undefined>(undefined);
   
   const settingsRef = useRef<SettingsHandle>(null);
   const menuRef = useRef<MenuHandle>(null);
   const mapRef = useRef<MapHandle>(null);
   const listViewRef = useRef<ListViewHandle>(null);
-  const searchRef = useRef<HTMLInputElement>(null);
+  const searchRef = useRef<StandaloneSearchBox>(null);
+
 
 
   const onSettingsClick = () => {
@@ -75,30 +78,29 @@ export default function Home() {
     listViewRef.current.show(false);
   }
 
-  const handlePlaceSelected = () => {
-    if(mapRef.current == null) return;
+  const handleSearch = () => {
+    if(autocomplete == undefined) return;
 
-    console.log("Č");
+    console.log(autocomplete.getPlace());
+  };
 
-    mapRef.current.getLatLngFromLocation();
+  const onGoogleLoad = ()=> {
+    //let suggestions = google.maps.places.Place.searchByText({textQuery: "Ljubljana", fields: ["*"], });
+    
   }
 
   return (
-    <LoadScriptNext googleMapsApiKey="AIzaSyCO0cmq-pEE39lV1ItHRM52pxYyETORlIo" libraries={['places']}>
+    <LoadScriptNext googleMapsApiKey="AIzaSyCO0cmq-pEE39lV1ItHRM52pxYyETORlIo" libraries={['places']} onLoad={onGoogleLoad}>
       <div className={styles.page}>
         <Button className={setBtnStyle.settingsButton} onClick={onSettingsClick}>
           <FontAwesomeIcon icon={faGear} size="3x" scale={1} color="white"/>
         </Button>
-        <Autocomplete 
-          onPlaceChanged={handlePlaceSelected}
-        >
-          <input
-            type="text"
-            placeholder="Search"
-            ref={searchRef}
-          />
-        </Autocomplete>
-        <MapWrapper showElSpaces={showEl} ref={mapRef} searchRef={searchRef} onMapClick={hideUI} />
+        <div className={styles.searchBox}>
+          <Autocomplete key={1} onPlaceChanged={handleSearch} onLoad={setAutocomplete}>
+            <input type='text' />
+          </Autocomplete>
+        </div>
+        <MapWrapper showElSpaces={showEl} ref={mapRef} onMapClick={hideUI} />
         <Footer>
           <Menu ref={menuRef} type="hidden" barCallBack={barClick}>
             <Settings ref={settingsRef}>

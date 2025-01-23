@@ -50,7 +50,6 @@ a {
   left: 10px !important;
   top: 84px !important;
 
-  display: flex;
   flex-direction: column;
 
   border: none;
@@ -58,9 +57,9 @@ a {
   padding: 0px 20px;
   background-color: #383838;
 
-  gap: 10px;
-
   padding-top: 18px;
+
+
 
   > .pac-item {
     border: none !important;
