@@ -28,7 +28,6 @@ export default function Home() {
   const menuRef = useRef<MenuHandle>(null);
   const mapRef = useRef<MapHandle>(null);
   const listViewRef = useRef<ListViewHandle>(null);
-  const searchRef = useRef<StandaloneSearchBox>(null);
 
 
 

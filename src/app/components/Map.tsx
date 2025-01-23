@@ -1,7 +1,7 @@
 'use client'
 
 import { GoogleMap } from '@react-google-maps/api';
-import { forwardRef, RefObject, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { generateData, parking} from '../data/data';
 import ParkMarker from './ParkMarker';
 
