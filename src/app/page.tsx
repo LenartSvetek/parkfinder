@@ -80,7 +80,7 @@ export default function Home() {
   const handleSearch = () => {
     if(autocomplete == undefined || mapRef.current == null) return;
 
-    let place : google.maps.places.PlaceResult = autocomplete.getPlace();
+    const place : google.maps.places.PlaceResult = autocomplete.getPlace();
 
     if(place.geometry && place.geometry.location) {
       mapRef.current.goTo(place.geometry.location);
