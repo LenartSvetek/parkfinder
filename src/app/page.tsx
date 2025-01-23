@@ -1,6 +1,6 @@
 'use client'
 
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useRef, useState } from 'react';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "./components/Button";
@@ -15,7 +15,6 @@ import Checkbox from './components/Checkbox';
 import ListView, { ListViewHandle } from './components/ListView';
 import { parking } from './data/data';
 import { MapHandle } from './components/Map';
-import { Search } from './components/Search';
 import { Autocomplete, LoadScriptNext } from '@react-google-maps/api';
 
 

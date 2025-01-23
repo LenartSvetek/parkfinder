@@ -1,7 +1,5 @@
 'use client'
 
-import { Libraries, useLoadScript } from "@react-google-maps/api";
-
 import {Map, MapHandle, MapProps } from "./Map";
 import { forwardRef } from "react";
 
