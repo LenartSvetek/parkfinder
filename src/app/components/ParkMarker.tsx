@@ -9,7 +9,6 @@ interface ParkMarkerProps extends parking {
 }
 
 export default function ParkMarker(info : ParkMarkerProps) {
-
     return <OverlayView
         position={info.location}
         mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}

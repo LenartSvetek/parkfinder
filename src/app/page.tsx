@@ -1,6 +1,6 @@
 'use client'
 
-import { ChangeEvent, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "./components/Button";
@@ -15,6 +15,8 @@ import Checkbox from './components/Checkbox';
 import ListView, { ListViewHandle } from './components/ListView';
 import { parking } from './data/data';
 import { MapHandle } from './components/Map';
+import { Search } from './components/Search';
+import { Autocomplete, LoadScriptNext } from '@react-google-maps/api';
 
 
 
@@ -25,6 +27,7 @@ export default function Home() {
   const menuRef = useRef<MenuHandle>(null);
   const mapRef = useRef<MapHandle>(null);
   const listViewRef = useRef<ListViewHandle>(null);
+  const searchRef = useRef<HTMLInputElement>(null);
 
 
   const onSettingsClick = () => {
@@ -73,21 +76,40 @@ export default function Home() {
     listViewRef.current.show(false);
   }
 
+  const handlePlaceSelected = () => {
+    if(mapRef.current == null) return;
+
+    console.log("Č");
+
+    mapRef.current.getLatLngFromLocation();
+  }
+
   return (
-    <div className={styles.page}>
-      <Button className={setBtnStyle.settingsButton} onClick={onSettingsClick}>
-        <FontAwesomeIcon icon={faGear} size="3x" scale={1} color="white"/>
-      </Button>
-      <MapWrapper showElSpaces={showEl} ref={mapRef} onMapClick={hideUI} />
-      <Footer>
-        <Menu ref={menuRef} type="hidden" barCallBack={barClick}>
-          <Settings ref={settingsRef}>
-            <Checkbox onChange={onShowCharginStation} checked={showEl}>Show electric chargin stations</Checkbox>
-          </Settings>
-          <ListView ref={listViewRef}>
-          </ListView>
-        </Menu>
-      </Footer>
-    </div>
+    <LoadScriptNext googleMapsApiKey="AIzaSyCO0cmq-pEE39lV1ItHRM52pxYyETORlIo" libraries={['places']}>
+      <div className={styles.page}>
+        <Button className={setBtnStyle.settingsButton} onClick={onSettingsClick}>
+          <FontAwesomeIcon icon={faGear} size="3x" scale={1} color="white"/>
+        </Button>
+        <Autocomplete 
+          onPlaceChanged={handlePlaceSelected}
+        >
+          <input
+            type="text"
+            placeholder="Search"
+            ref={searchRef}
+          />
+        </Autocomplete>
+        <MapWrapper showElSpaces={showEl} ref={mapRef} searchRef={searchRef} onMapClick={hideUI} />
+        <Footer>
+          <Menu ref={menuRef} type="hidden" barCallBack={barClick}>
+            <Settings ref={settingsRef}>
+              <Checkbox onChange={onShowCharginStation} checked={showEl}>Show electric chargin stations</Checkbox>
+            </Settings>
+            <ListView ref={listViewRef}>
+            </ListView>
+          </Menu>
+        </Footer>
+      </div>
+    </LoadScriptNext>
   );
 }
