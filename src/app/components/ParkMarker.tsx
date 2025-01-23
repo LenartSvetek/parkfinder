@@ -27,7 +27,7 @@ const ParkMarker = forwardRef<ParkMarkerHandle, ParkMarkerProps>((info : ParkMar
     >
         <div
             className={styles.marker}
-            onClick={() => {info.onMarkerClick? info.onMarkerClick(getParkingId()) : {} }}
+            onClick={() => {info.onMarkerClick? info.onMarkerClick(getParkingId()) : (()=> {})() }}
         >
             <div className={`${styles.pill} ${(info.parkInfo.freeSpaces > 5)? "" : (info.parkInfo.freeSpaces > 0)? styles.closeToCapacity : styles.atCapacity}`}>
                 <span className={styles.capacity}>{info.parkInfo.freeSpaces}</span>
