@@ -78,9 +78,19 @@ export default function Home() {
   }
 
   const handleSearch = () => {
-    if(autocomplete == undefined) return;
+    if(autocomplete == undefined || mapRef.current == null) return;
 
-    console.log(autocomplete.getPlace());
+    let place : google.maps.places.PlaceResult = autocomplete.getPlace();
+
+    if(place.geometry && place.geometry.location) {
+      mapRef.current.goTo(place.geometry.location);
+
+      if(place.types?.indexOf("locality") != -1) {
+        mapRef.current.zoomTo(15);
+      } else if(place.types?.indexOf("parking") != -1) {
+        mapRef.current.zoomTo(17);
+      }
+    }
   };
 
   const onGoogleLoad = ()=> {
@@ -95,7 +105,7 @@ export default function Home() {
           <FontAwesomeIcon icon={faGear} size="3x" scale={1} color="white"/>
         </Button>
         <div className={styles.searchBox}>
-          <Autocomplete key={1} onPlaceChanged={handleSearch} onLoad={setAutocomplete}>
+          <Autocomplete onPlaceChanged={handleSearch} onLoad={setAutocomplete} restrictions={{country : ["si"]}} options={{types: ["parking", "locality"]}}>
             <input type='text' />
           </Autocomplete>
         </div>

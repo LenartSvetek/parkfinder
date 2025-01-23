@@ -18,13 +18,16 @@ export interface MapProps {
 }
 
 export interface MapHandle {
-  getVisibleMarkers : () => parking[]
+  getVisibleMarkers : () => parking[],
+  goTo : (location : google.maps.LatLng) => void,
+  zoomTo : (zoomLevel : number) => void
 }
 
 const Map = forwardRef<MapHandle, MapProps>(({...props}, ref) => {
     const [location, setLocation] = useState<{ lat: number; lng: number } | undefined>(props.center);
     const [zoom, setZoom] = useState<number | undefined>(props.vZoom);
     const [data, setData] = useState<parking[]>([]);
+    const [map, setMap] = useState<google.maps.Map | undefined>(undefined);
 
 
     const mapRef = useRef<google.maps.Map>(null);
@@ -56,9 +59,22 @@ const Map = forwardRef<MapHandle, MapProps>(({...props}, ref) => {
       return newVisibleMarkers;
     };
 
+    const goTo = (location : google.maps.LatLng) => {
+      if(map == undefined) return;
+
+      map.panTo(location);
+    }
+
+    const zoomTo = (zoomLevel : number) => {
+      if(map == undefined) return;
+
+      map.setZoom(zoomLevel);
+    }
 
     useImperativeHandle(ref, () => ({
-      getVisibleMarkers
+      getVisibleMarkers,
+      goTo,
+      zoomTo
     }));
 
     useEffect(() => {
@@ -77,9 +93,11 @@ const Map = forwardRef<MapHandle, MapProps>(({...props}, ref) => {
         mapContainerStyle={{
         width: '100vw',
         height: '100dvh',
+        
         }}
         zoom={zoom}
         center={location}
+        
         options={{
           styles : mapStyle,
           disableDefaultUI: true, // Disables all default UI controls
@@ -89,6 +107,7 @@ const Map = forwardRef<MapHandle, MapProps>(({...props}, ref) => {
           fullscreenControl: false, // Disable fullscreen control
         }}
         onClick={props.onMapClick}
+        onLoad={setMap}
     >
       {
         data?.map((val : parking, i) => {
