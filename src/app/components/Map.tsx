@@ -1,9 +1,9 @@
 'use client'
 
 import { GoogleMap } from '@react-google-maps/api';
-import { forwardRef, RefObject, useImperativeHandle, useRef, useState } from 'react';
+import { forwardRef, useImperativeHandle, useState } from 'react';
 import { generateData, parking} from '../data/data';
-import { ParkMarker, ParkMarkerHandle } from './ParkMarker';
+import { ParkMarker } from './ParkMarker';
 
 import { mapStyle } from '../data/mapStyle';
 
@@ -87,7 +87,7 @@ const Map = forwardRef<MapHandle, MapProps>(({...props}, ref) => {
     else if (zoom == undefined) setZoom(17);
 
   
-    if(location && data.length == 0) setData(generateData(location));
+    if(location && data.length == 0) setData(generateData());
 
     return (
     <GoogleMap

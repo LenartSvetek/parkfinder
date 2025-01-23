@@ -3,7 +3,7 @@ import { parking } from "../data/data";
 import styles from "../styles/ParkMarker.module.scss"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCar, faChargingStation, faTicket, faUsers, faVideo } from "@fortawesome/free-solid-svg-icons";
-import { forwardRef, RefObject, useImperativeHandle } from "react";
+import { forwardRef, useImperativeHandle } from "react";
 
 interface ParkMarkerProps extends parking {
     showElSpaces ?: boolean,
@@ -27,7 +27,7 @@ const ParkMarker = forwardRef<ParkMarkerHandle, ParkMarkerProps>((info : ParkMar
     >
         <div
             className={styles.marker}
-            onClick={() => {info.onMarkerClick? info.onMarkerClick(getParkingId()) : undefined}}
+            onClick={() => {info.onMarkerClick? info.onMarkerClick(getParkingId()) : {} }}
         >
             <div className={`${styles.pill} ${(info.parkInfo.freeSpaces > 5)? "" : (info.parkInfo.freeSpaces > 0)? styles.closeToCapacity : styles.atCapacity}`}>
                 <span className={styles.capacity}>{info.parkInfo.freeSpaces}</span>

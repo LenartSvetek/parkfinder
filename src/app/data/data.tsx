@@ -25,7 +25,7 @@ export interface parking {
     name : string
 }
 
-export function generateData({lat, lng} : {lat: number, lng: number}) {
+export function generateData() {
     const data : parking[] = [];
     console.log("generating")
 
