@@ -15,7 +15,7 @@ import Checkbox from './components/Checkbox';
 import ListView, { ListViewHandle } from './components/ListView';
 import { parking } from './data/data';
 import { MapHandle } from './components/Map';
-import { Autocomplete, LoadScriptNext, StandaloneSearchBox } from '@react-google-maps/api';
+import { Autocomplete, LoadScriptNext } from '@react-google-maps/api';
 import React from 'react';
 
 
