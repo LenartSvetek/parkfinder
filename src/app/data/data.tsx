@@ -22,7 +22,8 @@ export interface parking {
 
 export function generateData({lat, lng} : {lat: number, lng: number}) {
     const data : parking[] = [];
-    
+    console.log("generating data")
+
     for(let i  = 0; i < randomInt(10, 15); i++){
         const pLat = lat + ((randomInt(-50, 50)) / 5000);
         const pLng = lng + ((randomInt(-50, 50)) / 5000);
