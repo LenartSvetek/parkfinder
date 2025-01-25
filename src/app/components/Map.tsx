@@ -146,7 +146,7 @@ const Map = forwardRef<MapHandle, MapProps>(({...props}, ref) => {
     else if (zoom == undefined) setZoom(17);
 
 
-    if(location && data.length == 0) setData(generateData());
+    if(location && data.length == 0) setData(generateData(location));
 
     useEffect(()=> {
       if(currentLocation == undefined)

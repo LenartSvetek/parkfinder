@@ -25,7 +25,7 @@ export interface parking {
     name : string
 }
 
-export function generateData() {
+export function generateData(location : {lat : number, lng : number}) {
     const data : parking[] = [];
     console.log("generating")
 
@@ -56,5 +56,62 @@ export function generateData() {
             name: "Parkirišče " + i
         })
     }
+
+    data.push(
+        {
+            idParking: data.length,
+            level: 1,
+            parkInfo: {
+                totalSpaces: 54,
+                normalSpaces: 54,
+                freeSpaces: 23,
+                freeElSpaces: 5,
+                electricSpaces: 8
+            },
+            location: {
+              lat: location.lat - 0.002,
+              lng: location.lng + 0.003
+            },
+            name: "All " + data.length
+        }
+    )
+
+    data.push(
+      {
+          idParking: data.length,
+          level: 2,
+          parkInfo: {
+              totalSpaces: 34,
+              normalSpaces: 34,
+              freeSpaces: 12,
+              freeElSpaces: 3,
+              electricSpaces: 5
+          },
+          location: {
+            lat: location.lat - 0.005,
+            lng: location.lng + 0.001
+          },
+          name: "Ball " + data.length
+      }
+  )
+
+    data.push(
+        {
+            idParking: data.length,
+            level: 3,
+            parkInfo: {
+                totalSpaces: 12,
+                normalSpaces: 12,
+                freeSpaces: 5,
+                freeElSpaces: 0,
+                electricSpaces: 5
+            },
+            location: {
+            lat: location.lat + 0.001,
+            lng: location.lng + 0.002
+            },
+            name: "Call " + data.length
+        }
+    )
     return data;
 }
