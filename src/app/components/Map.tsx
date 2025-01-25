@@ -160,7 +160,7 @@ const Map = forwardRef<MapHandle, MapProps>(({...props}, ref) => {
 
     };
 
-    const handleMapClick = (e : google.maps.MapMouseEvent) => {
+    const handleMapClick = () => {
       if(props.onMapClick)
         props.onMapClick();
     }
