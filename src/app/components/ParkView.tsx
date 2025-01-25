@@ -33,7 +33,7 @@ const ParkView = forwardRef<ParkViewHandle, ParkViewProps>(({mapRef, ...rest}, r
 
     const onPark = (parkingId : number) => { 
         if(!mapRef || !mapRef.current) return; 
-        let data = mapRef.current.getData();
+        const data = mapRef.current.getData();
 
         if(data[parkingId].parkInfo.freeSpaces == 0) return;
 

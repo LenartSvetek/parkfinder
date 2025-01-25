@@ -1,7 +1,7 @@
 'use client'
 
 import { GoogleMap, Marker } from '@react-google-maps/api';
-import { Dispatch, forwardRef, SetStateAction, useEffect, useImperativeHandle, useState } from 'react';
+import { forwardRef, SetStateAction, useEffect, useImperativeHandle, useState } from 'react';
 import { generateData, parking} from '../data/data';
 import { ParkMarker } from './ParkMarker';
 
@@ -203,7 +203,7 @@ const Map = forwardRef<MapHandle, MapProps>(({...props}, ref) => {
       }
       {
         data?.map((val : parking, i) => {
-          return <ParkMarker onMarkerClick={props.onMarkerClick} key={i} location={val.location} level={val.level} parkInfo={val.parkInfo} showElSpaces={props.showElSpaces} name={val.name} idParking={val.idParking}></ParkMarker>
+          return <ParkMarker onMarkerClick={props.onMarkerClick} key={i} location={val.location} level={val.level} parkInfo={val.parkInfo} showElSpaces={props.showElSpaces} name={val.name} idParking={val.idParking} parkedAt={val.parkedAt}></ParkMarker>
         })
       }
     </GoogleMap>
