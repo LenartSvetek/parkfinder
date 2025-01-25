@@ -1,20 +1,27 @@
-import { forwardRef, useImperativeHandle, useState } from 'react';
+"use client"
+
+import { forwardRef, RefObject, useImperativeHandle, useState } from 'react';
 import styles from '../styles/ParkView.module.scss'
 import { parking } from '../data/data';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCar, faChargingStation, faUsers, faVideo, faTicket, faLocationDot } from '@fortawesome/free-solid-svg-icons';
+import { faCar, faChargingStation, faUsers, faVideo, faTicket, faLocationDot, faSquareParking } from '@fortawesome/free-solid-svg-icons';
 import Image from 'next/image'
 import Link from 'next/link';
+import { MapHandle } from './Map';
+import Button from './Button';
+
+interface ParkViewProps extends React.HTMLAttributes<HTMLDivElement>{
+    mapRef ?: RefObject<MapHandle | null>;
+}
 
 export interface ParkViewHandle {
   show : (show: boolean) => void,
   setParkingSpace : (parks : parking) => void
 }
 
-const ParkView = forwardRef<ParkViewHandle, React.HTMLAttributes<HTMLDivElement>>(({...props }, ref) => {
+const ParkView = forwardRef<ParkViewHandle, ParkViewProps>(({mapRef, ...rest}, ref) => {
     const [bShow, setShow] = useState<boolean>(false);  
     const [parking, setParking] = useState<parking | undefined>(undefined);
-    
     const show = (show : boolean) => setShow(show);
 
     const setParkingSpace = (parking : parking) => setParking(parking);
@@ -24,8 +31,20 @@ const ParkView = forwardRef<ParkViewHandle, React.HTMLAttributes<HTMLDivElement>
         setParkingSpace
     }));
 
+    const onPark = (parkingId : number) => { 
+        if(!mapRef || !mapRef.current) return; 
+        let data = mapRef.current.getData();
+
+        if(data[parkingId].parkInfo.freeSpaces == 0) return;
+
+        data[parkingId].parkInfo.freeSpaces--;
+        data[parkingId].parkedAt = true;
+        setParking({...data[parkingId]});
+        mapRef.current.setData(([] as parking[]).concat(data));
+    }
+
     return (
-        <div {...props} className={`${styles.parkView} ${(!bShow)?styles.hidden : ""}`}>
+        <div {...rest} className={`${styles.parkView} ${(!bShow)?styles.hidden : ""}`}>
         {
             (parking)? (
                 <>
@@ -53,6 +72,12 @@ const ParkView = forwardRef<ParkViewHandle, React.HTMLAttributes<HTMLDivElement>
                         :<></>
                 }
                 <div className={styles.link}>
+                    { parking.parkInfo.freeSpaces > 0?
+                        <Button className={`${styles.pill} ${(parking.parkedAt)? styles.disabled : ""}`} onClick={() => onPark(parseInt(parking.name.split(" ")[1]))} disabled={(parking.parkedAt? true : false)}>
+                            <FontAwesomeIcon icon={faSquareParking} size='lg' />
+                            <span>Park</span>
+                        </Button> : <></>
+                    }
                     <Link className={styles.pill} href={`https://maps.google.com/?q=${parking.location.lat},${parking.location.lng}`}>
                         <FontAwesomeIcon icon={faLocationDot} />
                         <span>Navigate</span>

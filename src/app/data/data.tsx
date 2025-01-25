@@ -22,7 +22,8 @@ export interface parking {
         lat : number,
         lng : number
     }
-    name : string
+    name : string,
+    parkedAt : boolean
 }
 
 export function generateData(location : {lat : number, lng : number}) {
@@ -53,7 +54,8 @@ export function generateData(location : {lat : number, lng : number}) {
                 lat: pLat,
                 lng: pLng
             },
-            name: "Parkirišče " + i
+            name: "Parkirišče " + i,
+            parkedAt: false
         })
     }
 
@@ -72,7 +74,8 @@ export function generateData(location : {lat : number, lng : number}) {
               lat: location.lat - 0.002,
               lng: location.lng + 0.003
             },
-            name: "All " + data.length
+            name: "All " + data.length,
+            parkedAt: false
         }
     )
 
@@ -91,7 +94,8 @@ export function generateData(location : {lat : number, lng : number}) {
             lat: location.lat - 0.005,
             lng: location.lng + 0.001
           },
-          name: "Ball " + data.length
+          name: "Ball " + data.length,
+          parkedAt: false
       }
   )
 
@@ -110,7 +114,8 @@ export function generateData(location : {lat : number, lng : number}) {
             lat: location.lat + 0.001,
             lng: location.lng + 0.002
             },
-            name: "Call " + data.length
+            name: "Call " + data.length,
+            parkedAt: false
         }
     )
     return data;

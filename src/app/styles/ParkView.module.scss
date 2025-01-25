@@ -55,6 +55,7 @@ $atCapacity: #c52a1e;
         display: flex;
         justify-content: flex-end;
 
+        gap: 10px;
         .pill {
             display: flex;
 
@@ -64,11 +65,16 @@ $atCapacity: #c52a1e;
             min-width: 72px;
             background-color: $normalCapacity;
             color: black;
+            font-size: 14px;
             font-weight: 700;
 
             padding: 5px 10px;
 
             border-radius: 25px;
+
+            &.disabled {
+                background: $atCapacity;
+            }
         }
     }
 }

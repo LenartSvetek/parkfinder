@@ -1,7 +1,7 @@
 'use client'
 
 import { GoogleMap, Marker } from '@react-google-maps/api';
-import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
+import { Dispatch, forwardRef, SetStateAction, useEffect, useImperativeHandle, useState } from 'react';
 import { generateData, parking} from '../data/data';
 import { ParkMarker } from './ParkMarker';
 
@@ -25,6 +25,7 @@ export interface MapHandle {
   zoomTo : (zoomLevel : number) => void,
   goAndZoom : (location : google.maps.LatLng, zoomLevel : number) => void,
   getData : () => parking[],
+  setData : (data : SetStateAction<parking[]>) => void
   goToUser : () => void
 }
 
@@ -46,7 +47,6 @@ const Map = forwardRef<MapHandle, MapProps>(({...props}, ref) => {
     const [zoom, setZoom] = useState<number | undefined>(props.vZoom);
     const [data, setData] = useState<parking[]>([]);
     const [map, setMap] = useState<google.maps.Map | undefined>(undefined);
-
 
     const getLocation = () => {
         if (navigator.geolocation) {
@@ -136,6 +136,7 @@ const Map = forwardRef<MapHandle, MapProps>(({...props}, ref) => {
       zoomTo,
       goAndZoom,
       getData,
+      setData,
       goToUser
     }));
 

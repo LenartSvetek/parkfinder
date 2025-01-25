@@ -1,3 +1,5 @@
+"use client"
+
 import { OverlayView } from "@react-google-maps/api";
 import { parking } from "../data/data";
 import styles from "../styles/ParkMarker.module.scss"

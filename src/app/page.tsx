@@ -163,7 +163,9 @@ export default function Home() {
             </Settings>
             <ListView ref={listViewRef} onItemClick={onMarkerClick}>
             </ListView>
-            <ParkView ref={parkViewRef}></ParkView>
+            { mapRef.current?
+              <ParkView ref={parkViewRef} mapRef={mapRef}></ParkView> : <></>
+            }
           </Menu>
         </Footer>
       </div>
