@@ -9,7 +9,7 @@ import { MapWrapper } from "./components/MapWrapper";
 import Menu, { MenuHandle } from "./components/Menu";
 import styles from "./page.module.css";
 import setBtnStyle from "./styles/settingsButton.module.scss";
-import { faGear } from "@fortawesome/free-solid-svg-icons";
+import { faGear, faLocationCrosshairs, faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import Settings, { SettingsHandle } from "./components/Settings";
 import Checkbox from './components/Checkbox';
 import ListView, { ListViewHandle } from './components/ListView';
@@ -73,6 +73,27 @@ export default function Home() {
     listViewRef.current.setParkingSpaces(parks);
   }
 
+  const closeBtnClick = () => {
+    if(menuRef.current == null || parkViewRef.current == null || mapRef.current == null || listViewRef.current == null || settingsRef.current == null) return;
+
+    if(menuRef.current.getType() != "listView"){
+      menuRef.current.setType("listView");
+      listViewRef.current.show(true);
+      settingsRef.current.show(false);
+      parkViewRef.current.show(false);
+    }
+    else {
+      menuRef.current.setType("hidden");
+      settingsRef.current.show(false);
+      listViewRef.current.show(false);
+      parkViewRef.current.show(false);
+    }
+
+    const parks : parking[] = mapRef.current.getCloseParkings();
+
+    listViewRef.current.setParkingSpaces(parks);
+  }
+
   const hideUI = () => {
     if(menuRef.current == null || mapRef.current == null || listViewRef.current == null || settingsRef.current == null || parkViewRef.current == null) return;
     menuRef.current.setType("hidden");
@@ -87,15 +108,16 @@ export default function Home() {
     const place : google.maps.places.PlaceResult = autocomplete.getPlace();
 
     if(place.geometry && place.geometry.location) {
-      mapRef.current.goTo(place.geometry.location);
 
       if(place.types?.indexOf("locality") != -1) {
-        mapRef.current.zoomTo(15);
+        mapRef.current.goAndZoom(place.geometry.location, 15);
       } else if(place.types?.indexOf("parking") != -1) {
-        mapRef.current.zoomTo(17);
+        mapRef.current.goAndZoom(place.geometry.location, 17);
       }
     }
   };
+
+  const handleGoTo = () => mapRef.current && mapRef.current.goToUser();
 
   const onGoogleLoad = ()=> {
     //let suggestions = google.maps.places.Place.searchByText({textQuery: "Ljubljana", fields: ["*"], });
@@ -122,12 +144,18 @@ export default function Home() {
         <Button className={setBtnStyle.settingsButton} onClick={onSettingsClick}>
           <FontAwesomeIcon icon={faGear} size="3x" scale={1} color="white"/>
         </Button>
+        <Button className={styles.findClosest} onClick={closeBtnClick}>
+          <FontAwesomeIcon icon={faLocationDot} size="3x" />
+        </Button>
         <div className={styles.searchBox}>
           <Autocomplete onPlaceChanged={handleSearch} onLoad={setAutocomplete} restrictions={{country : ["si"]}} options={{types: ["parking", "locality"]}}>
             <input type='text' />
           </Autocomplete>
         </div>
         <MapWrapper showElSpaces={showEl} ref={mapRef} onMapClick={hideUI} onMarkerClick={onMarkerClick} />
+        <Button className={styles.rtnBtn} onClick={handleGoTo}>
+          <FontAwesomeIcon icon={faLocationCrosshairs} size="2x" />
+        </Button>
         <Footer>
           <Menu ref={menuRef} type="hidden" barCallBack={barClick}>
             <Settings ref={settingsRef}>

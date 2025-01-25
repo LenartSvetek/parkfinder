@@ -20,10 +20,25 @@ export interface MapProps {
 
 export interface MapHandle {
   getVisibleMarkers : () => parking[],
+  getCloseParkings : () => parking[],
   goTo : (location : google.maps.LatLng) => void,
   zoomTo : (zoomLevel : number) => void,
-  getData : () => parking[]
+  goAndZoom : (location : google.maps.LatLng, zoomLevel : number) => void,
+  getData : () => parking[],
+  goToUser : () => void
 }
+
+const haversineDistance = (lat1 : number, lon1 : number, lat2 : number, lon2 : number) => {
+  const R = 6371; // Radius of the Earth in km
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c; // Distance in km
+};
 
 const Map = forwardRef<MapHandle, MapProps>(({...props}, ref) => {
     const [location, setLocation] = useState<{ lat: number; lng: number } | undefined>(props.center);
@@ -78,6 +93,15 @@ const Map = forwardRef<MapHandle, MapProps>(({...props}, ref) => {
       });
     };
 
+    const getCloseParkings = () => {
+      if(map == undefined && currentLocation == undefined) return [];
+
+      return data.filter((marker) => {
+        if(currentLocation == undefined) return false;
+        return haversineDistance(currentLocation?.lat, currentLocation?.lng, marker.location.lat, marker.location.lng) < 4;
+      });
+    }
+
     const goTo = (location : google.maps.LatLng) => {
       if(map == undefined) return;
 
@@ -90,13 +114,29 @@ const Map = forwardRef<MapHandle, MapProps>(({...props}, ref) => {
       map.setZoom(zoomLevel);
     }
 
+    const goAndZoom = (location : google.maps.LatLng, zoomLevel : number) => {
+      if(map == undefined) return;
+
+      map.setZoom(zoomLevel);
+      map.panTo(location);
+      
+
+    }
+
     const getData = () => data;
+
+    const goToUser = () => {
+      if(map && currentLocation) map.panTo(currentLocation);
+    }
 
     useImperativeHandle(ref, () => ({
       getVisibleMarkers,
+      getCloseParkings,
       goTo,
       zoomTo,
-      getData
+      goAndZoom,
+      getData,
+      goToUser
     }));
 
     if(zoom == undefined && location != undefined) setZoom(19);
@@ -120,6 +160,22 @@ const Map = forwardRef<MapHandle, MapProps>(({...props}, ref) => {
 
     };
 
+    const handleMapClick = (e : google.maps.MapMouseEvent) => {
+      if(props.onMapClick)
+        props.onMapClick();
+    }
+
+    /*const handleRightClick = (e : google.maps.MapMouseEvent) => {
+        if(e.latLng)
+          setCurrentLocation({lat: e.latLng.lat(), lng: e.latLng.lng()});
+    }*/
+
+    const onMapLoad = (ref : google.maps.Map) => {
+      setMap(ref);
+
+      //ref.addListener("rightclick", handleRightClick);
+    }
+
     return (
     <GoogleMap
         mapContainerStyle={{
@@ -138,8 +194,8 @@ const Map = forwardRef<MapHandle, MapProps>(({...props}, ref) => {
           mapTypeControl: false,  // Disable map type control
           fullscreenControl: false, // Disable fullscreen control
         }}
-        onClick={props.onMapClick}
-        onLoad={setMap}
+        onClick={handleMapClick}
+        onLoad={onMapLoad}
     >
       {
         currentLocation? <Marker position={currentLocation} icon={customSvgIcon}></Marker> : <></>
